@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title}">My Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://unpkg.com/htmx.org@2.0.2"
+      integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      document.addEventListener('htmx:afterRequest', function (event) {
+        if (event.detail.target.id === 'posts-list') {
+          document.getElementById('edit-post-form').innerHTML = '';
+        }
+      });
+    </script>
+  </head>
+  <body class="bg-gray-100">
+    <div th:replace="~{layout/header :: header}"></div>
+
+    <div class="container mx-auto mt-4">
+      <div th:switch="${content}">
+        <div th:case="'all-posts'">
+          <div th:replace="~{blog/all-posts :: all-posts}"></div>
+        </div>
+
+        <div th:case="*">
+          <p>No matching content</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+<form
+  id="edit-form-container"
+  th:attr="hx-patch=@{/htmx/posts/{id}(id=${post.id})}"
+  hx-target="#posts-list"
+  hx-swap="innerHTML"
+>
+  <div class="mb-4">
+    <label for="edit-post-text" class="block text-gray-700">Edit Post:</label>
+    <textarea
+      id="edit-post-text"
+      name="text"
+      rows="3"
+      class="w-full p-2 border rounded"
+      th:text="${post.text}"
+    ></textarea>
+  </div>
+  <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+    Update Post
+  </button>
+</form>

@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: blog
+      MYSQL_ROOT_PASSWORD: password # Only this variable is needed for root user
+    ports:
+      - '3316:3306' # Host port:Container port
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - springboot-mysql
+
+  app:
+    build: .
+    container_name: springboot
+    ports:
+      - '8090:8080' # Host port:Container port
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/blog
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - mysql
+    networks:
+      - springboot-mysql
+    volumes:
+      - app-data:/app/uploads
+
+volumes:
+  mysql-data:
+  app-data:
+
+networks:
+  springboot-mysql:
+    driver: bridge
